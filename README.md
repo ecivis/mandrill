@@ -2,8 +2,6 @@
 
 This is a ColdBox Module to use with the Mandrill API. See the [Mandrill API Documentation](https://mandrillapp.com/api/docs/) for more information about the service.
 
-See `tests.specs.TestMandrill` for example usage. Better documentation, a more complete implementation, and configuration guidance will be added as the project matures.
-
 ## Requirements
 - Lucee 5+
 - ColdBox 4+
@@ -15,6 +13,42 @@ Install using [CommandBox](https://www.ortussolutions.com/products/commandbox):
 `box install mandrill`
 
 Create an application-specific mapping for `/modules/mandrill/models` as `/mandrill`.
+
+Add a ColdBox setting named mandrill, containing a valid API key as `apiKey`. Optionally, the default endpoint base URL (https://mandrillapp.com/api/1.0/) may be overridden using `endpointBaseUrl`:
+```
+    settings = {
+        "mandrill" = {
+            "apiKey" = "YOUR_API_KEY"
+        }
+    };
+
+```
+
+## Usage
+
+The Mandrill client will be instantiated and configured on ColdBox application startup. Inject it where needed, or request it by name. Here's how one might send a message from a ColdBox Handler:
+```
+var message = {
+    "html": "<h1>Way To Go Donny!</h1><p>If you will it, Dude, it is no dream.</p>",
+    "subject": "Over The Line",
+    "from_email": "walter@domain.tld",
+    "from_name": "Walter Sobchak",
+    "to": [
+        {
+            "email": "donny@domain.tld",
+            "name": "Theodore Donald 'Donny' Kerabatsos"
+        },
+        {
+            "email": "the_dude@domain.tld",
+            "name": "The Dude"
+        }
+    ]
+};
+getInstance("mandrillClient").messages.send(message=message);
+```
+
+It's important to note that the sender address for messages sent through Mandrill must match a verified domain. See the [knowledge base article](https://mandrill.zendesk.com/hc/en-us/articles/205582247-About-Domain-Verification) on this topic for more information.
+
 
 ## Tests
 
