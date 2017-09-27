@@ -1,0 +1,17 @@
+{
+    "openBrowser":false,
+    "app":{
+        "cfengine":"lucee@5.2.2+71"
+    },
+    "web":{
+        "host":"${SERVER_HOST:127.0.0.1}",
+        "http":{
+            "port":"${SERVER_PORT:8080}"
+        }
+    },
+    "jvm":{
+        "heapSize":512,
+        "minHeapSize":256,
+        "args":""
+    }
+}
