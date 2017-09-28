@@ -6,10 +6,10 @@ component {
     * The constructor will configure itself with the calls it supports.
     */
     public Mandrill function init() {
-        this.users = new mandrill.calls.Users(this);
-        this.messages = new mandrill.calls.Messages(this);
-        this.rejects = new mandrill.calls.Rejects(this);
-        this.whitelists = new mandrill.calls.Whitelists(this);
+        this.users = new mandrill.models.calls.Users(this);
+        this.messages = new mandrill.models.calls.Messages(this);
+        this.rejects = new mandrill.models.calls.Rejects(this);
+        this.whitelists = new mandrill.models.calls.Whitelists(this);
 
         return this;
     }

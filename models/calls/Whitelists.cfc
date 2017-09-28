@@ -1,6 +1,6 @@
 component {
 
-    public Whitelists function init(required mandrill.Mandrill mandrill) {
+    public Whitelists function init(required mandrill.models.Mandrill mandrill) {
         variables.mandrill = arguments.mandrill;
         return this;
     }

@@ -7,16 +7,15 @@ component {
     this.version = "0.0.1";
     this.dependencies = [];
     this.autoMapModels = false;
+    this.cfmapping = "mandrill";
 
     /**
     * Configure
     */
     public void function configure() {
-        var userSettings = variables.controller.getSetting(name="mandrill", fwSetting=false, defaultValue={});
-
         variables.settings = {
-            "apiKey" = userSettings.keyExists("apiKey") ? userSettings.apiKey : "",
-            "endpointBaseUrl" = userSettings.keyExists("endpointBaseUrl") ? userSettings.endpointBaseUrl : ""
+            "apiKey": "",               // A valid Mandrill API key is required to use the service.
+            "endpointBaseUrl": ""       // This is optional. The connector will use its default if not overridden.
         };
     }
 
@@ -24,16 +23,16 @@ component {
     * Fired when the module is registered and activated.
     */
     public void function onLoad() {
-        variables.binder.map("mandrillConnector")
-            .to("mandrill.MandrillConnector")
+        variables.binder.map("mandrillConnector@mandrill")
+            .to("mandrill.models.MandrillConnector")
             .initArg(name="apiKey", value=variables.settings.apiKey)
             .initArg(name="endpointBaseUrl", value=variables.settings.endpointBaseUrl)
             .asSingleton();
 
-        variables.binder.map("mandrillClient")
-            .to("mandrill.Mandrill")
+        variables.binder.map("mandrillClient@mandrill")
+            .to("mandrill.models.Mandrill")
             .withInfluence(function (injector, object, instance) {
-                instance.setMandrillConnector(injector.getInstance("mandrillConnector"));
+                instance.setMandrillConnector(injector.getInstance("mandrillConnector@mandrill"));
                 return instance;
             })
             .asSingleton();

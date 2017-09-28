@@ -1,6 +1,6 @@
 component {
 
-    public Users function init(required mandrill.Mandrill mandrill) {
+    public Users function init(required mandrill.models.Mandrill mandrill) {
         variables.mandrill = arguments.mandrill;
         return this;
     }

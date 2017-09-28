@@ -17,9 +17,9 @@ component extends="testbox.system.BaseSpec" {
 
             beforeEach(function () {
                 if (variables.config.liveTest) {
-                    variables.mandrillConnector = new mandrill.MandrillConnector(apiKey=getApiKey());
+                    variables.mandrillConnector = new mandrill.models.MandrillConnector(apiKey=getApiKey());
                 } else {
-                    variables.mandrillConnector = getMockBox().createEmptyMock("mandrill.MandrillConnector");
+                    variables.mandrillConnector = getMockBox().createEmptyMock("mandrill.models.MandrillConnector");
                 }
             });
 
@@ -27,7 +27,7 @@ component extends="testbox.system.BaseSpec" {
             /* USERS */
 
             it("should get user information", function () {
-                var mandrill = getMockBox().prepareMock(new mandrill.Mandrill());
+                var mandrill = getMockBox().prepareMock(new mandrill.models.Mandrill());
                 var result = {};
 
                 if (!variables.config.liveTest) {
@@ -47,7 +47,7 @@ component extends="testbox.system.BaseSpec" {
             /* MESSAGES */
 
             it("should be able to send a basic message", function () {
-                var mandrill = getMockBox().prepareMock(new mandrill.Mandrill());
+                var mandrill = getMockBox().prepareMock(new mandrill.models.Mandrill());
                 var message = {};
                 var result = {};
                 var response = [];
@@ -86,7 +86,7 @@ component extends="testbox.system.BaseSpec" {
             });
 
             it("should be able to send a message using a template", function () {
-                var mandrill = getMockBox().prepareMock(new mandrill.Mandrill());
+                var mandrill = getMockBox().prepareMock(new mandrill.models.Mandrill());
                 var template_content = [];
                 var message = {};
                 var result = {};
@@ -131,7 +131,7 @@ component extends="testbox.system.BaseSpec" {
             /* REJECTS */
 
             it("should get a list of rejects with stats", function () {
-                var mandrill = getMockBox().prepareMock(new mandrill.Mandrill());
+                var mandrill = getMockBox().prepareMock(new mandrill.models.Mandrill());
                 var response = [];
                 var result = {};
 
@@ -162,7 +162,7 @@ component extends="testbox.system.BaseSpec" {
             });
 
             it("should be able to add a rejected address", function () {
-                var mandrill = getMockBox().prepareMock(new mandrill.Mandrill());
+                var mandrill = getMockBox().prepareMock(new mandrill.models.Mandrill());
                 var response = [];
                 var result = {};
 
@@ -181,7 +181,7 @@ component extends="testbox.system.BaseSpec" {
             });
 
             it("should be able to delete a rejected address", function () {
-                var mandrill = getMockBox().prepareMock(new mandrill.Mandrill());
+                var mandrill = getMockBox().prepareMock(new mandrill.models.Mandrill());
                 var response = [];
                 var result = {};
 
@@ -203,7 +203,7 @@ component extends="testbox.system.BaseSpec" {
             /* WHITELISTS */
 
             it("should get a list of whitelisted addresses", function () {
-                var mandrill = getMockBox().prepareMock(new mandrill.Mandrill());
+                var mandrill = getMockBox().prepareMock(new mandrill.models.Mandrill());
                 var response = [];
                 var result = {};
 
@@ -228,7 +228,7 @@ component extends="testbox.system.BaseSpec" {
             });
 
             it("should be able to add a whitelisted address", function () {
-                var mandrill = getMockBox().prepareMock(new mandrill.Mandrill());
+                var mandrill = getMockBox().prepareMock(new mandrill.models.Mandrill());
                 var response = [];
                 var result = {};
 
@@ -247,7 +247,7 @@ component extends="testbox.system.BaseSpec" {
             });
 
             it("should be able to delete a whitelisted address", function () {
-                var mandrill = getMockBox().prepareMock(new mandrill.Mandrill());
+                var mandrill = getMockBox().prepareMock(new mandrill.models.Mandrill());
                 var response = [];
                 var result = {};
 

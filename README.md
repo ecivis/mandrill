@@ -1,10 +1,13 @@
 # Mandrill
 
+[![Master Branch Build Status](https://img.shields.io/travis/ecivis/mandrill/master.svg?style=flat-square&label=master)](https://travis-ci.org/ecivis/mandrill)
+
+
 This is a ColdBox Module to use with the Mandrill API. See the [Mandrill API Documentation](https://mandrillapp.com/api/docs/) for more information about the service.
 
 ## Requirements
-- Lucee 5+
-- ColdBox 4+
+- Lucee 5.2+
+- ColdBox 4.3+
 - Java 8+
 
 ## Installation
@@ -12,16 +15,13 @@ This is a ColdBox Module to use with the Mandrill API. See the [Mandrill API Doc
 Install using [CommandBox](https://www.ortussolutions.com/products/commandbox):
 `box install mandrill`
 
-Create an application-specific mapping for `/modules/mandrill/models` as `/mandrill`.
-
-Add a ColdBox setting named mandrill, containing a valid API key as `apiKey`. Optionally, the default endpoint base URL (https://mandrillapp.com/api/1.0/) may be overridden using `endpointBaseUrl`:
+Within `config/Coldbox.cfc` add a module settings element named `mandrill` and define your Mandrill API key in `apiKey`. Optionally, the default endpoint base URL (https://mandrillapp.com/api/1.0/) may be overridden using `endpointBaseUrl`:
 ```
-    settings = {
-        "mandrill" = {
-            "apiKey" = "YOUR_API_KEY"
-        }
-    };
-
+moduleSettings = {
+    "mandrill" = {
+        "apiKey" = "YOUR_API_KEY"
+    }
+};
 ```
 
 ## Usage
@@ -44,10 +44,41 @@ var message = {
         }
     ]
 };
-getInstance("mandrillClient").messages.send(message=message);
+getInstance("mandrillClient@mandrill").messages.send(message=message);
 ```
 
 It's important to note that the sender address for messages sent through Mandrill must match a verified domain. See the [knowledge base article](https://mandrill.zendesk.com/hc/en-us/articles/205582247-About-Domain-Verification) on this topic for more information.
+
+### Support
+
+This project is an attempt to mimic the official Mandrill libraries for Python and Node.js. All of the features of the Mandrill API aren't implemented yet. Here's a summary of the calls supported in this version:
+
+[/users/info](https://mandrillapp.com/api/docs/users.JSON.html#method=info)
+`Mandrill.users.info()`
+
+[/messages/send](https://mandrillapp.com/api/docs/messages.JSON.html#method=send)
+`Mandrill.messages.send(required struct message, boolean async, string ip_pool, string send_at)`
+
+[/messages/send-template](https://mandrillapp.com/api/docs/messages.JSON.html#method=send-template)
+`Mandrill.messages.send_template(required string template_name, required array template_content, required struct message, boolean async, string ip_pool, string send_at)`
+
+[/rejects/list](https://mandrillapp.com/api/docs/rejects.JSON.html#method=list)
+`Mandrill.rejects.list(string email, boolean include_expired, string subaccount)`
+
+[/rejects/add](https://mandrillapp.com/api/docs/rejects.JSON.html#method=add)
+`Mandrill.rejects.add(required string email, string comment, string subaccount)`
+
+[/rejects/delete](https://mandrillapp.com/api/docs/rejects.JSON.html#method=delete)
+`Mandrill.rejects.delete(required string email, string subaccount)`
+
+[/whitelists/list](https://mandrillapp.com/api/docs/whitelists.JSON.html#method=list)
+`Mandrill.whitelists.list(string email)`
+
+[/whitelists/add](https://mandrillapp.com/api/docs/whitelists.JSON.html#method=add)
+`Mandrill.whitelists.add(required string email, string comment)`
+
+[/whitelists/delete](https://mandrillapp.com/api/docs/whitelists.JSON.html#method=delete)
+`Mandrill.whitelists.delete(required string email)`
 
 
 ## Tests

@@ -1,6 +1,6 @@
 component {
 
-    public Rejects function init(required mandrill.Mandrill mandrill) {
+    public Rejects function init(required mandrill.models.Mandrill mandrill) {
         variables.mandrill = arguments.mandrill;
         return this;
     }
