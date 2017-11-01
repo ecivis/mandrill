@@ -1,8 +1,8 @@
 {
     "name":"Mandrill",
-    "version":"0.0.1",
+    "version":"0.0.2",
     "author":"Joseph Lamoree",
-    "location":"ecivis/mandrill#v0.0.1",
+    "location":"ecivis/mandrill#v0.0.2",
     "homepage":"https://github.com/ecivis/mandrill",
     "documentation":"https://github.com/ecivis/mandrill",
     "repository":{
