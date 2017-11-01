@@ -4,9 +4,9 @@ component extends="testbox.system.BaseSpec" {
 
         variables.config = {
             "apiKey": getApiKey(),
-            "authDomain": "domain.tld"
+            "authDomain": "authorized.tld"
         };
-        if (variables.config.apiKey.len()) {
+        if (len(variables.config.apiKey)) {
             variables.config.liveTest = true;
         }
 
@@ -39,8 +39,8 @@ component extends="testbox.system.BaseSpec" {
 
                 debug(result);
 
-                expect(result.keyExists("username")).toBeTrue();
-                expect(result.keyExists("stats")).toBeTrue();
+                expect(structKeyExists(result, "username")).toBeTrue();
+                expect(structKeyExists(result, "stats")).toBeTrue();
             });
 
 
@@ -80,7 +80,7 @@ component extends="testbox.system.BaseSpec" {
 
                 debug(result);
 
-                expect(result.len()).toBe(1);
+                expect(arrayLen(result)).toBe(1);
                 expect(result[1].status).toBe("sent");
                 expect(result[1].email).toBe("recipient@domain.tld");
             });
@@ -102,8 +102,8 @@ component extends="testbox.system.BaseSpec" {
                     variables.mandrillConnector.$(method="makeApiCall", returns=response);
                 }
 
-                template_content.append({"name":"header_text", "content":"Test Message Header"});
-                template_content.append({"name":"body_text", "content":"<p>This is a test message.</p>"});
+                arrayAppend(template_content, {"name":"header_text", "content":"Test Message Header"});
+                arrayAppend(template_content, {"name":"body_text", "content":"<p>This is a test message.</p>"});
 
                 message = {
                     "subject": "Test Email",
@@ -122,7 +122,7 @@ component extends="testbox.system.BaseSpec" {
 
                 debug(result);
 
-                expect(result.len()).toBe(1);
+                expect(arrayLen(result)).toBe(1);
                 expect(result[1].status).toBe("sent");
                 expect(result[1].email).toBe("recipient@domain.tld");
             });
@@ -168,14 +168,14 @@ component extends="testbox.system.BaseSpec" {
 
                 if (!variables.config.liveTest) {
                     response = {
-                        "email": "rejected@domain.tld",
+                        "email": "blacklisted@domain.tld",
                         "added": true
                     };
                     variables.mandrillConnector.$(method="makeApiCall", returns=response);
                 }
 
                 mandrill.$property(propertyName="mandrillConnector", mock=variables.mandrillConnector);
-                result = mandrill.rejects.add(email="rejected@domain.tld");
+                result = mandrill.rejects.add(email="blacklisted@domain.tld");
 
                 debug(result);
             });
@@ -187,14 +187,14 @@ component extends="testbox.system.BaseSpec" {
 
                 if (!variables.config.liveTest) {
                     response = {
-                        "email": "rejected@domain.tld",
+                        "email": "blacklisted@domain.tld",
                         "deleted": true
                     };
                     variables.mandrillConnector.$(method="makeApiCall", returns=response);
                 }
 
                 mandrill.$property(propertyName="mandrillConnector", mock=variables.mandrillConnector);
-                result = mandrill.rejects.delete(email="rejected@domain.tld");
+                result = mandrill.rejects.delete(email="blacklisted@domain.tld");
 
                 debug(result);
             });
@@ -271,13 +271,14 @@ component extends="testbox.system.BaseSpec" {
 
     private string function getApiKey() {
         var apiKey = "";
+        var sys = createObject("java", "java.lang.System");
 
-        apiKey = createObject("java", "System").getenv("MANDRILL_API_KEY");
-        if (!isNull(apiKey) && apiKey.len()) {
+        apiKey = sys.getenv("MANDRILL_API_KEY");
+        if (!isNull(apiKey) && len(apiKey)) {
             return apiKey;
         }
-        apiKey = createObject("java", "System").getProperty("mandrill.api.key");
-        if (!isNull(apiKey) && apiKey.len()) {
+        apiKey = sys.getProperty("mandrill.api.key");
+        if (!isNull(apiKey) && len(apiKey)) {
             return apiKey;
         }
         return "";

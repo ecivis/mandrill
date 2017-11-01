@@ -9,7 +9,7 @@ component {
         var payload = {};
         var result = {};
 
-        if (arguments.keyExists("email")) {
+        if (structKeyExists(arguments, "email")) {
             payload["email"] = arguments.email;
         }
 
@@ -23,7 +23,7 @@ component {
         var result = {};
 
         payload["email"] = arguments.email;
-        if (arguments.keyExists("comment")) {
+        if (structKeyExists(arguments, "comment")) {
             payload["comment"] = arguments.comment;
         }
 
@@ -37,7 +37,7 @@ component {
         var result = {};
 
         payload["email"] = arguments.email;
-        if (arguments.keyExists("subaccount")) {
+        if (structKeyExists(arguments, "subaccount")) {
             payload["subaccount"] = arguments.subaccount;
         }
 

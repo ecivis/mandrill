@@ -9,13 +9,13 @@ component {
         var payload = {};
         var result = {};
 
-        if (arguments.keyExists("email")) {
+        if (structKeyExists(arguments, "email")) {
             payload["email"] = arguments.email;
         }
-        if (arguments.keyExists("include_expired")) {
+        if (structKeyExists(arguments, "include_expired")) {
             payload["include_expired"] = arguments.include_expired;
         }
-        if (arguments.keyExists("subaccount")) {
+        if (structKeyExists(arguments, "subaccount")) {
             payload["subaccount"] = arguments.subaccount;
         }
 
@@ -29,10 +29,10 @@ component {
         var result = {};
 
         payload["email"] = arguments.email;
-        if (arguments.keyExists("comment")) {
+        if (structKeyExists(arguments, "comment")) {
             payload["comment"] = arguments.comment;
         }
-        if (arguments.keyExists("subaccount")) {
+        if (structKeyExists(arguments, "subaccount")) {
             payload["subaccount"] = arguments.subaccount;
         }
 
@@ -46,7 +46,7 @@ component {
         var result = {};
 
         payload["email"] = arguments.email;
-        if (arguments.keyExists("subaccount")) {
+        if (structKeyExists(arguments, "subaccount")) {
             payload["subaccount"] = arguments.subaccount;
         }
 

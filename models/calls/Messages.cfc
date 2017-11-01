@@ -10,13 +10,13 @@ component {
         var result = [];
 
         payload["message"] = arguments.message;
-        if (arguments.keyExists("async")) {
+        if (structKeyExists(arguments, "async")) {
             payload["async"] = arguments.async;
         }
-        if (arguments.keyExists("ip_pool")) {
+        if (structKeyExists(arguments, "ip_pool")) {
             payload["ip_pool"] = arguments.ip_pool;
         }
-        if (arguments.keyExists("send_at")) {
+        if (structKeyExists(arguments, "send_at")) {
             payload["send_at"] = arguments.send_at;
         }
 
@@ -32,13 +32,13 @@ component {
         payload["message"] = arguments.message;
         payload["template_name"] = arguments.template_name;
         payload["template_content"] = arguments.template_content;
-        if (arguments.keyExists("async")) {
+        if (structKeyExists(arguments, "async")) {
             payload["async"] = arguments.async;
         }
-        if (arguments.keyExists("ip_pool")) {
+        if (structKeyExists(arguments, "ip_pool")) {
             payload["ip_pool"] = arguments.ip_pool;
         }
-        if (arguments.keyExists("send_at")) {
+        if (structKeyExists(arguments, "send_at")) {
             payload["send_at"] = arguments.send_at;
         }
 

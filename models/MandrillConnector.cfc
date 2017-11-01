@@ -8,8 +8,8 @@ component {
     * @apiKey Any valid API key.
     */
     public MandrillConnector function init(string endpointBaseUrl, string apiKey) {
-        variables.endpointBaseUrl = arguments.keyExists("endpointBaseUrl") && arguments.endpointBaseUrl.len() ? arguments.endpointBaseUrl : "https://mandrillapp.com/api/1.0/";
-        variables.apiKey = arguments.keyExists("apiKey") ? arguments.apiKey : "";
+        variables.endpointBaseUrl = structKeyExists(arguments, "endpointBaseUrl") && len(arguments.endpointBaseUrl) ? arguments.endpointBaseUrl : "https://mandrillapp.com/api/1.0/";
+        variables.apiKey = structKeyExists(arguments, "apiKey") ? arguments.apiKey : "";
 
         if (right(variables.endpointBaseUrl, 1) != "/") {
             variables.endpointBaseUrl = variables.endpointBaseUrl & "/";
@@ -38,7 +38,7 @@ component {
         _payload["key"] = variables.apiKey;
 
         try {
-            if (variables.keyExists("log") && variables.log.canDebug()) {
+            if (structKeyExists(variables, "log") && variables.log.canDebug()) {
                 variables.log.debug("Calling #endpoint#");
             }
 
@@ -47,23 +47,23 @@ component {
             req.addParam(type="body", value="#serializeJson(_payload)#");
 
             resp = req.send().getPrefix();
-        } catch (e) {
+        } catch (any e) {
             error = "The HTTP call to #endpoint# failed.";
-            if (e.keyExists("message")) {
+            if (structKeyExists(e, "message")) {
                 error = error & " " & e.message;
             }
-            if (e.keyExists("detail")) {
+            if (structKeyExists(e, "detail")) {
                 error = error & " " & e.detail;
             }
-            if (variables.keyExists("log") && variables.log.canError()) {
+            if (structKeyExists(variables, "log") && variables.log.canError()) {
                 variables.log.error(error);
             }
             throw(type="HttpException", message=error);
         }
 
-        if (!resp.keyExists("statusCode")) {
+        if (!structKeyExists(resp, "statusCode")) {
             error = "The HTTP response does not contain a statusCode.";
-            if (variables.keyExists("log") && variables.log.canError()) {
+            if (structKeyExists(variables, "log") && variables.log.canError()) {
                 variables.log.error(error);
             }
             throw(type="HttpException", message=error);
@@ -71,15 +71,15 @@ component {
 
         if (reFind("^200", resp.statusCode) == 0) {
             error = "The Mandrill API returned status '#resp.statusCode#'.";
-            if (variables.keyExists("log") && variables.log.canError()) {
+            if (structKeyExists(variables, "log") && variables.log.canError()) {
                 variables.log.error(error);
             }
             throw(type="ApiResponseException", message=error);
         }
 
-        if (!resp.keyExists("fileContent") || len(resp.fileContent) == 0) {
+        if (!structKeyExists(resp, "fileContent") || len(resp.fileContent) == 0) {
             error = "The Mandrill API did not return content.";
-            if (variables.keyExists("log") && variables.log.canError()) {
+            if (structKeyExists(variables, "log") && variables.log.canError()) {
                 variables.log.error(error);
             }
             throw(type="ApiResponseException", message=error);
@@ -87,27 +87,27 @@ component {
 
         try {
             result = deserializeJSON(resp.fileContent);
-        } catch (e) {
+        } catch (any e) {
             error = "The JSON response from Mandrill could not be parsed.";
-            if (e.keyExists("message")) {
+            if (structKeyExists(e, "message")) {
                 error = error & " " & e.message;
             }
-            if (e.keyExists("detail")) {
+            if (structKeyExists(e, "detail")) {
                 error = error & " " & e.detail;
             }
-            if (variables.keyExists("log") && variables.log.canError()) {
+            if (structKeyExists(variables, "log") && variables.log.canError()) {
                 variables.log.error(error);
             }
             throw(type="InvalidJsonException", message=error);
         }
 
-        if (isStruct(result) && result.keyExists("status") && result.status == "error") {
-            if (result.keyExists("message")) {
+        if (isStruct(result) && structKeyExists(result, "status") && result.status == "error") {
+            if (structKeyExists(result, "message")) {
                 error = "The Mandrill API returned an error: #result.message#";
             } else {
-                error = "The Mandrill API returned an error."
+                error = "The Mandrill API returned an error.";
             }
-            if (variables.keyExists("log") && variables.log.canError()) {
+            if (structKeyExists(variables, "log") && variables.log.canError()) {
                 variables.log.error(error);
             }
             throw(type="ApiErrorException", message="The Mandrill API returned an error");

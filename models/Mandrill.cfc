@@ -1,7 +1,5 @@
 component {
 
-    property name="log" inject="logbox:logger:{this}";
-
     /**
     * The constructor will configure itself with the calls it supports.
     */
@@ -15,7 +13,7 @@ component {
     }
 
     public MandrillConnector function getMandrillConnector() {
-        if (variables.keyExists("mandrillConnector")) {
+        if (structKeyExists(variables, "mandrillConnector")) {
             return variables.mandrillConnector;
         }
         throw(type="MandrillConfigurationException", message="The Mandrill instance does not have a properly configurated MandrillConnector.");
