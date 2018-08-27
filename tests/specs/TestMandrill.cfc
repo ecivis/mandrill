@@ -64,7 +64,7 @@ component extends="testbox.system.BaseSpec" {
 
                 message = {
                     "html": "<p>This is a test email.</p>",
-                    "subject": "Test Email",
+                    "subject": "Test Email - Basic Message",
                     "from_email": "sender@#variables.config.authDomain#",
                     "from_name": "Test Sender",
                     "to": [
@@ -106,7 +106,7 @@ component extends="testbox.system.BaseSpec" {
                 arrayAppend(template_content, {"name":"body_text", "content":"<p>This is a test message.</p>"});
 
                 message = {
-                    "subject": "Test Email",
+                    "subject": "Test Email - Template",
                     "from_email": "sender@#variables.config.authDomain#",
                     "from_name": "Test Sender",
                     "to": [
@@ -119,6 +119,62 @@ component extends="testbox.system.BaseSpec" {
 
                 mandrill.$property(propertyName="mandrillConnector", mock=variables.mandrillConnector);
                 result = mandrill.messages.send_template(template_name="generic-email-template", template_content=template_content, message=message, async=false);
+
+                debug(result);
+
+                expect(arrayLen(result)).toBe(1);
+                expect(result[1].status).toBe("sent");
+                expect(result[1].email).toBe("recipient@domain.tld");
+            });
+
+            it("should be able to send a message using a template using Handlebars", function () {
+                var mandrill = getMockBox().prepareMock(new mandrill.models.Mandrill());
+                var template_content = [];
+                var message = {};
+                var result = {};
+                var response = [];
+
+                if (!variables.config.liveTest) {
+                    response = [
+                        {
+                            "status": "sent",
+                            "email": "recipient@domain.tld"
+                        }
+                    ];
+                    variables.mandrillConnector.$(method="makeApiCall", returns=response);
+                }
+
+                /*
+                When using Handlebars, use global_merge_vars instead of template_content. See below.
+                */
+                arrayAppend(template_content, {"name":"first_name", "content":"Yourname"});
+                arrayAppend(template_content, {"name":"requests", "content":[
+                    {
+                        "req_title":"Request Title One",
+                        "req_description":"This is the description for the first request."
+                    },
+                    {
+                        "req_title":"Request Title Two",
+                        "req_description":"This is the description for the second request."
+                    }
+                ]});
+
+                message = {
+                    "subject": "Test Email - Template with Handlebars",
+                    "from_email": "sender@#variables.config.authDomain#",
+                    "from_name": "Test Sender",
+                    "to": [
+                        {
+                            "email": "recipient@domain.tld",
+                            "name": "Test Recipient"
+                        }
+                    ],
+                    "global_merge_vars": template_content,
+                    "merge_language": "handlebars"
+                };
+
+                mandrill.$property(propertyName="mandrillConnector", mock=variables.mandrillConnector);
+                result = mandrill.messages.send_template(template_name="handlebars-test", template_content=[], message=message, async=false);
 
                 debug(result);
 

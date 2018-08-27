@@ -50,7 +50,7 @@
     "testbox":{
         "runner":[
             {
-                "default":"http://${SERVER_HOST:127.0.0.1}:${SERVER_PORT:8080}/tests/runner.cfm"
+                "default":"/tests/runner.cfm"
             }
         ],
         "labels":"",
