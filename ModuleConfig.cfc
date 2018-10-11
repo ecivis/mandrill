@@ -4,7 +4,7 @@ component {
     this.author = "Joseph Lamoree";
     this.webURL = "https://github.com/ecivis/mandrill";
     this.description = "An interface to the Mandrill API.";
-    this.version = "0.0.2";
+    this.version = "0.0.3";
     this.dependencies = [];
     this.autoMapModels = false;
     this.cfmapping = "mandrill";
@@ -23,6 +23,16 @@ component {
     * Fired when the module is registered and activated.
     */
     public void function onLoad() {
+
+        // Backwards compatiblity with ColdBox 4.2
+        if (variables.settings.apiKey == "") {
+            if (variables.controller.settingExists("mandrill")) {
+                if (variables.controller.getSetting("mandrill").keyExists("apiKey")) {
+                    variables.settings.apiKey = variables.controller.getSetting("mandrill").apiKey;
+                }
+            }
+        }
+
         variables.binder.map("mandrillConnector@mandrill")
             .to("mandrill.models.MandrillConnector")
             .initArg(name="apiKey", value=variables.settings.apiKey)
