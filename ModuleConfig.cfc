@@ -4,7 +4,7 @@ component {
     this.author = "Joseph Lamoree";
     this.webURL = "https://github.com/ecivis/mandrill";
     this.description = "An interface to the Mandrill API.";
-    this.version = "0.0.3";
+    this.version = "0.0.4";
     this.dependencies = [];
     this.autoMapModels = false;
     this.cfmapping = "mandrill";

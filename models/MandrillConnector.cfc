@@ -35,6 +35,11 @@ component {
             endpoint = reReplace(endpoint, "([^:])//+", "\1/", "all");
         }
 
+        // Do not attempt to use the Mandrill API without an API key; the result would be a hard 500 HTTP response
+        if (len(variables.apiKey) == 0) {
+            throw(type="ConfigException", message="The Mandrill module does not have an API key defined. A request will not be made.");
+        }
+
         _payload["key"] = variables.apiKey;
 
         try {
@@ -49,8 +54,13 @@ component {
             resp = req.send().getPrefix();
         } catch (any e) {
             error = "The HTTP call to #endpoint# failed.";
+
             if (structKeyExists(e, "message")) {
-                error = error & " " & e.message;
+                if (e.message == "500 Internal Server Error") {
+                    error = error & " It is very likely that the Mandril API key is incorrect.";
+                } else {
+                    error = error & " " & e.message;
+                }
             }
             if (structKeyExists(e, "detail")) {
                 error = error & " " & e.detail;

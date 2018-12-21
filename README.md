@@ -83,9 +83,21 @@ This project is an attempt to mimic the official Mandrill libraries for Python a
 
 ## Tests
 
-The package is configured such that tests can be executed within CommandCox using `testbox run`. Note that environment variables `SERVER_HOST` and `SERVER_PORT` can be set to configure the CFML engine used for testing.
+The package is configured such that tests can be executed within CommandCox using `testbox run` after the embedded server is started with `server start`.
 
-By default, the REST calls to Mandrill are mocked. To run the tests against the live Mandrill service, define a valid Mandrill API key as an environment variable (`MANDRILL_API_KEY`) or a Java system property (`mandrill.api.key`). Also ensure that `authDomain` in the test spec configuration is verified and matches the API key.
+By default, the REST calls to Mandrill are mocked. To run the tests against the live Mandrill service, define an API key and authorized domain. If you have the [dotEnv](https://forgebox.io/view/commandbox-dotenv) CommandBox system module installed, this is pretty easy. See the `.env.example` file in the project root. It defines the two configuration options:
+```
+mandrill.api.key=secret
+mandrill.auth.domain=authorized.tld
+```
+Copy the example as `.env` and plug in your values.
+
+Another option is to configure environment variables in the shell before starting CommandBox. For example:
+```
+export MANDRILL_API_KEY="secret"
+export MANDRILL_AUTH_DOMAIN="authorized.tld"
+```
+
 
 ## License
 

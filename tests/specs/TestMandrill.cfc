@@ -3,15 +3,16 @@ component extends="testbox.system.BaseSpec" {
     public function run() {
 
         variables.config = {
+            "liveTest": false,
             "apiKey": getApiKey(),
-            "authDomain": "authorized.tld"
+            "authDomain": getAuthDomain()
         };
-        if (len(variables.config.apiKey)) {
+        if (len(variables.config.apiKey) > 0 && len(variables.config.authDomain) > 0) {
             variables.config.liveTest = true;
         }
 
-        // Force non-live tests, even when the API key exists
-        variables.config.liveTest = false;
+        // Force non-live tests, even when configuration values exists
+        // variables.config.liveTest = false;
 
         describe("The Mandrill client", function () {
 
@@ -338,6 +339,21 @@ component extends="testbox.system.BaseSpec" {
             return apiKey;
         }
         return "";
+    }
+
+    private string function getAuthDomain() {
+        var authDomain = "";
+        var sys = createObject("java", "java.lang.System");
+
+        authDomain = sys.getenv("MANDRILL_AUTH_DOMAIN");
+        if (!isNull(authDomain) && len(authDomain)) {
+            return authDomain;
+        }
+        authDomain = sys.getProperty("mandrill.auth.domain");
+        if (!isNull(authDomain) && len(authDomain)) {
+            return authDomain;
+        }
+        return "authorized.tld";
     }
 
 }
