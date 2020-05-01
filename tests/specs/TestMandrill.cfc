@@ -86,6 +86,59 @@ component extends="testbox.system.BaseSpec" {
                 expect(result[1].email).toBe("recipient@domain.tld");
             });
 
+            it("should be able to send a message with CC and BCC recipients", function () {
+                var mandrill = getMockBox().prepareMock(new mandrill.models.Mandrill());
+                var message = {};
+                var result = {};
+                var response = [];
+
+                if (!variables.config.liveTest) {
+                    response = [
+                        {
+                            "status": "sent",
+                            "email": "recipient@domain.tld"
+                        }
+                    ];
+                    variables.mandrillConnector.$(method="makeApiCall", returns=response);
+                }
+
+                message = {
+                    "html": "<p>This is a test email with CC and BCC recipients.</p>",
+                    "subject": "Test Email - CC and BCC Recipients",
+                    "from_email": "sender@#variables.config.authDomain#",
+                    "from_name": "Test Sender",
+                    "to": [
+                        {
+                            "email": "recipient@domain.tld",
+                            "name": "Test Recipient"
+                        },
+                        {
+                            "email": "cc@domain.tld",
+                            "name": "Test CC Recipient",
+                            "type": "cc"
+                        },
+                        {
+                            "email": "bcc@domain.tld",
+                            "name": "Test BCC Recipient",
+                            "type": "bcc"
+                        },
+                    ]
+                };
+
+                mandrill.$property(propertyName="mandrillConnector", mock=variables.mandrillConnector);
+                result = mandrill.messages.send(message=message);
+
+                debug(result);
+
+                expect(arrayLen(result)).toBe(3);
+                expect(result[1].status).toBe("sent");
+                expect(result[1].email).toBe("recipient@domain.tld");
+                expect(result[2].status).toBe("sent");
+                expect(result[2].email).toBe("cc@domain.tld");
+                expect(result[3].status).toBe("sent");
+                expect(result[3].email).toBe("bcc@domain.tld");
+            });
+
             it("should be able to send a message using a template", function () {
                 var mandrill = getMockBox().prepareMock(new mandrill.models.Mandrill());
                 var template_content = [];

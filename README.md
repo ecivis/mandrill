@@ -41,6 +41,11 @@ var message = {
         {
             "email": "the_dude@domain.tld",
             "name": "The Dude"
+        },
+        {
+            "email": "jeffrey.lebowski@domain.tld",
+            "name": "The Other Jeffrey Lebowski, The Millionaire",
+            "type": "cc"
         }
     ]
 };

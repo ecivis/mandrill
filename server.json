@@ -1,7 +1,7 @@
 {
     "openBrowser":false,
     "app":{
-        "cfengine":"lucee@5.2.2+71"
+        "cfengine":"lucee@5.3"
     },
     "jvm":{
         "heapSize":512,
